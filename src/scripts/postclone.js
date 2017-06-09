@@ -14,10 +14,12 @@ var class_name,
     seed_demo_property_name = "yourPlugin",
     seed_github_username = "YourName",
     demo_folder = "../demo",
-    readme_template_file = "README.md",
-    readme_file = "../README.md",
     screenshots_dir = "../screenshots",
-    seed_tests_dir = "../seed-tests";
+    seed_tests_dir = "../seed-tests"
+    filesToReplace = {
+        readmeFile: { name: "README.md", location: "../README.md"},
+        travisFile: { name: ".travis.yml", location: "../.travis.yml"}
+    };
 
 console.log('NativeScript Plugin Seed Configuration');
 
@@ -153,13 +155,17 @@ function adjustScripts() {
         }
     }
 
-    initReadMe();
+    replaceFiles();
 }
 
-function initReadMe() {
-    var contents = fs.readFileSync(readme_template_file);
-    fs.writeFileSync(readme_file, contents);
-    fs.unlinkSync(readme_template_file);
+function replaceFiles() {
+
+    for(key in filesToReplace){
+        var file = filesToReplace[key];
+        var contents = fs.readFileSync(file.name);
+        fs.writeFileSync(file.location, contents);
+        fs.unlinkSync(file.name);
+    }
 
     rimraf(screenshots_dir, function() {
         console.log('Screenshots removed.');

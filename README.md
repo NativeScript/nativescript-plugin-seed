@@ -104,7 +104,7 @@ Take a look at these existing plugins for how that can be done very simply:
 
 ### <a name='Unittesting'></a>Unittesting
 The plugin seed automatically adds Jasmine-based unittest support to your plugin.
-Open `demo/app/tests/tests.js` and adjust its contents as you wish.
+Open `demo/app/tests/tests.js` and adjust its contents so the tests become meaningful in the context of your plugin and its features.
 
 You can read more about this topic [here](https://docs.nativescript.org/tooling/testing).
 
@@ -128,6 +128,6 @@ If you just want to create a package, go to `publish` folder and execute `pack.s
 
 ### <a name='TravisCI'></a>TravisCI
 
-The plugin structure comes with fully functional .travis.yml file that deploys the testing app on Android emulator and as a subsequent step runs the tests from [UnitTesting section](#Unittesting). All you have to do, after cloning the repo and implementing your plugin and tests, is to sign up at [https://travis-ci.org/](https://travis-ci.org/). Then enable your plugin's repo on "https://travis-ci.org/profile/<your github user\>" and that's it. Next time a PR is openend or change is commited to a branch TravisCI will trigger a build testing the code.
+The plugin structure comes with fully functional .travis.yml file that deploys the testing app on Android emulator nad iOS simulator and as a subsequent step runs the tests from [UnitTesting section](#Unittesting). All you have to do, after cloning the repo and implementing your plugin and tests, is to sign up at [https://travis-ci.org/](https://travis-ci.org/). Then enable your plugin's repo on "https://travis-ci.org/profile/<your github user\>" and that's it. Next time a PR is opened or change is commited to a branch TravisCI will trigger a build testing the code.
 
 To properly show current build status you will have to edit the badge at the start of the README.md file so it matches your repo, user and branch. 
