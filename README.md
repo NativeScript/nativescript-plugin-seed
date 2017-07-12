@@ -54,7 +54,7 @@ What does the seed give you out of the box?
 |demo/tests| The tests for your plugin|
 |src| The plugin source code|
 |src/platform/android| Plugin Android specific configuration|
-|src/platform/ios|Plugin ios specific configuration|
+|src/platform/ios|Plugin ios specific configuration. All configurations that are applicable via XCode Info tab and are saved in application's Info.plist file can also be applied for plugins. |
 |src/README|Your plugin README stub explaining how other developers can use your plugin in their applications. Used when you publish your plugin to NPM. On postclone step, the README in the root is replaced with this one.|
 |src/scripts|The postclone script run when you execute `npm run postclone`. Feel free to delete it after you have executed the postclone step from the [Getting started](#Gettingstarted) section|
 |publish|Contains a shell script to create and publish your package. Read more on creating a package and publishing in the [Publish to NPM](#Publishtonpm) section|
