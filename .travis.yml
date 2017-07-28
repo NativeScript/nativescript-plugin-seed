@@ -24,10 +24,12 @@ android:
     - build-tools-25.0.2
     - android-25
     - extra-android-m2repository
- 
+    - sys-img-armeabi-v7a-android-21
+
 install:
     - npm install -g nativescript --ignore-scripts
     - tns usage-reporting disable
     - tns error-reporting disable
     - cd seed-tests
     - npm i
+    - android list targets
