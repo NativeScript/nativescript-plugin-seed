@@ -144,6 +144,11 @@ If you just want to create a package, go to `publish` folder and execute `pack.s
 
 The plugin structure comes with a fully functional .travis.yml file that deploys the testing app on Android emulator and iOS simulator and as a subsequent step runs the tests from [UnitTesting section](#Unittesting). All you have to do, after cloning the repo and implementing your plugin and tests, is to sign up at [https://travis-ci.org/](https://travis-ci.org/). Then enable your plugin's repo on "https://travis-ci.org/profile/<your github user\>" and that's it. Next time a PR is opened or change is committed to a branch TravisCI will trigger a build testing the code.
 
+The Travis CI integration involves a number of scripts in the plugin's `package.json` files in the `src` and `demo` directories. The scripts include:
+ - TSLint to check that all scripts in the plugin source and demo app can be compiled (the `ci.tslint` script)
+ - builds to check that the demo app using the plugin source can be successfully built on iOS and Android (the `ci.android.build` and `ci.ios.build`)
+ - builds to check that the demo app can be build with webpack/uglify on iOS and Android (the `ci.android.build.webpack` and `ci.ios.build.webpack` scripts)
+
 To properly show current build status you will have to edit the badge at the start of the README.md file so it matches your repo, user and branch. 
 
 ### <a name='ReferringtnscoremodulesinthePlugin'></a>Referring tns-core-modules in the Plugin
