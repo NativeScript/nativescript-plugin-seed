@@ -23,6 +23,7 @@ project and paste your dependencies and devDependencies here)
 ### Please, tell us how to recreate the issue in as much detail as possible. 
 Describe the steps to reproduce it.
 
-### Is there any code involved? 
- - provide a code example to recreate the problem 
- - (EVEN BETTER) provide a .zip with application or refer to a repository with application where the problem is reproducible.
+### Is there any code involved? Please provide any of the following:
+ - code example to recreate the problem in [NativeScript Playground](https://play.nativescript.org/)
+ - code sample in the issue
+ - .zip with application or refer to a repository with application where the problem is reproducible.
