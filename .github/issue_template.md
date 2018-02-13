@@ -25,5 +25,5 @@ Describe the steps to reproduce it.
 
 ### Is there any code involved? Please provide any of the following:
  - code example to recreate the problem in [NativeScript Playground](https://play.nativescript.org/)
- - code sample in the issue
+ - code example in the issue
  - .zip with application or refer to a repository with application where the problem is reproducible.
