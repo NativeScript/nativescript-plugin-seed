@@ -36,7 +36,7 @@
     "resolve-url-loader": "~2.1.0",
     "tns-platform-declarations": "^3.1.0",
     "tslint": "~5.4.3",
-    "typescript": "~2.3.0",
+    "typescript": "~2.7.2",
     "webpack": "~3.8.1",
     "webpack-bundle-analyzer": "^2.8.2",
     "webpack-sources": "~1.0.1"

@@ -4,32 +4,34 @@ branches:
 matrix:
   include:
     - stage: "Build next"
-      os: linux
-      language: android
-      env:
-        - TestVersion="next"
-      jdk: oraclejdk8
-      before_install:
-        - nvm install 8.9.4
-      before_script:
-        - echo no | android create avd --force -n test -t android-21 -b armeabi-v7a
-        - emulator -avd test -no-audio -no-window &
-        - android-wait-for-emulator
-        - tns platform add android@next
-        - cd ../seed-tests && npm i
-      script: travis_wait travis_retry npm run test.android
-      dist: precise
-    - os: osx
+      # os: linux
+      # language: android
+      # env:
+      #   - TestVersion="next"
+      # jdk: oraclejdk8
+      # before_install:
+      #   - nvm install 8.9.4
+      # before_script:
+      #   - echo no | android create avd --force -n test -t android-21 -b armeabi-v7a
+      #   - emulator -avd test -no-audio -no-window &
+      #   - android-wait-for-emulator
+      #   - tns platform add android@next
+      #   - cd ../seed-tests && npm i
+      # script: travis_wait travis_retry npm run test.android
+      # dist: precise
+      os: osx
       env:
         - TestVersion="next"
       language: node_js
       node_js: "8"
       jdk: oraclejdk8
-      osx_image: xcode8.3
+      osx_image: xcode9.0
       before_script:
         - tns platform add ios@next
         - cd ../seed-tests && npm i
-      script: travis_wait travis_retry npm run test.ios
+      script: 
+        - travis_wait travis_retry npm run test.ios
+        - cd seed-copy/src && npm run test.ios
 
 android:
   components:
