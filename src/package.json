@@ -11,14 +11,14 @@
         }
     },
     "repository": {
-		"type": "git",
-		"url": "https://github.com/YourName/nativescript-yourplugin.git"
-	},
+        "type": "git",
+        "url": "https://github.com/YourName/nativescript-yourplugin.git"
+    },
     "scripts": {
         "tsc": "tsc",
         "build": "npm run tsc && npm run build.native",
         "build.native": "node scripts/build-native.js",
-        "postclone": "npm i && node scripts/postclone.js && cd ../demo && npm i && npx rimraf -- package-lock.json && cd ../src",
+        "postclone": "npm i && node scripts/postclone.js",
         "test.android": "npm run tsc && npm run tslint && cd ../demo && tns build android && tns test android --justlaunch",
         "test.ios": "npm run tsc && npm run tslint && cd ../demo && tns build ios && tns test ios --justlaunch",
         "tslint": "cd .. && tslint \"**/*.ts\" --config tslint.json --exclude \"**/node_modules/**\"",
