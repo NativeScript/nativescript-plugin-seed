@@ -22,9 +22,9 @@ var class_name,
     tsAppName = "demo",
     angularAppName = "demo-angular",
     // vueAppName = "demo-vue",
-    demo_folder = "../" + tsAppName,
-    demo_angular_folder = "../" + angularAppName,
-    // demo_vue_folder = "../" + vueAppName,
+    demoTsFolder = "../" + tsAppName,
+    demoAngularFolder = "../" + angularAppName,
+    // demoVueFolder = "../" + vueAppName,
     screenshots_dir = "../screenshots",
     seed_tests_dir = "../seed-tests",
     scripts_dir = "scripts",
@@ -65,7 +65,35 @@ var class_name,
                 "app/*"
             ]
         }
-    ];
+    ],
+    appNamePlaceholderStr = "appNamePlaceholder",
+    pluginNamePlaceholderStr = "pluginNamePlaceholder",
+    appPathPlaceholderStr = "appPathPlaceholder",
+    removeAddPluginCommand = "cd appNamePlaceholder && tns plugin remove pluginNamePlaceholder && tns plugin add ../src",
+    removeAddPluginCommandPlaceholderStr = "removeAddPluginCommandPlaceholder",
+    cleanAppsScriptPlaceholderStr = "cleanAppsScriptPlaceholder",
+    preDefinedAppScripts = [
+        {
+            key: "appNamePlaceholder.ios",
+            value: "npm run tsc && cd appPathPlaceholder && tns run ios --syncAllFiles --emulator"
+        },
+        {
+            key: "appNamePlaceholder.android",
+            value: "npm run tsc && cd appPathPlaceholder && tns run android --syncAllFiles --emulator"
+        }],
+    preDefinedPrepareScript =
+    {
+        key: "plugin.prepare",
+        value: "npm run build removeAddPluginCommandPlaceholder"
+    },
+    preDefinedResetScript = {
+        key: "appNamePlaceholder.reset",
+        value: "cd appPathPlaceholder && npx rimraf -- hooks node_modules platforms package-lock.json"
+    },
+    preDefinedCleanScript = {
+        key: "clean",
+        value: "cleanAppsScriptPlaceholder && npx rimraf -- node_modules package-lock.json && npm i",
+    };
 
 console.log('NativeScript Plugin Seed Configuration');
 
@@ -205,12 +233,12 @@ function askAngularDemo() {
 
 function createDemoAppsFromTemplates() {
     if (inputParams.include_typescript_demo && inputParams.include_typescript_demo.toLowerCase() === "y") {
-        appsToCreate.push({ 
+        appsToCreate.push({
             command: "cd ../ && tns create " + tsAppName + " --template tns-template-blank-ts && cd " + tsAppName + " && cd ../src/",
             successMessage: "TypeScript-NativeScript application created at: /demo",
             type: "TypeScript"
         });
-        appsToInstallPluginIn.push(demo_folder);
+        appsToInstallPluginIn.push(demoTsFolder);
     }
 
     if (inputParams.include_angular_demo && inputParams.include_angular_demo.toLowerCase() === "y") {
@@ -219,7 +247,7 @@ function createDemoAppsFromTemplates() {
             successMessage: "Angular-NativeScript application created at: /demo-angular",
             type: "Angular"
         });
-        appsToInstallPluginIn.push(demo_angular_folder);
+        appsToInstallPluginIn.push(demoAngularFolder);
     }
 
     // if (inputParams.include_vue_demo && inputParams.include_vue_demo.toLowerCase() === "y") {
@@ -228,7 +256,7 @@ function createDemoAppsFromTemplates() {
     //         successMessage: "Vue-NativeScript application created at: /demo-vue",
     //         type: "Vue"
     //     });
-    //     appsToInstallPluginIn.push(demo_vue_folder);
+    //     appsToInstallPluginIn.push(demoVueFolder);
     // }
 
     let appObject = appsToCreate.pop();
@@ -293,42 +321,42 @@ function adjustScripts() {
     files.push("platforms/android/include.gradle");
 
     // add the demo files
-    let demoAppPath = demo_folder + "/app/home/";
+    let demoAppPath = demoTsFolder + "/app/home/";
     if (fs.existsSync(demoAppPath)) {
-        files.push(demo_folder + "/package.json");
+        files.push(demoTsFolder + "/package.json");
         var demoFiles = fs.readdirSync(demoAppPath);
         for (var d in demoFiles) {
             var demoFile = demoFiles[d];
             files.push(demoAppPath + demoFile);
         }
 
-        updateAppsTsConfigFile(path.resolve(__dirname, "../" + demo_folder));
+        updateAppsTsConfigFile(path.resolve(__dirname, "../" + demoTsFolder));
     }
 
     // add the demo-angular files
-    let demoAngularAppPath = demo_angular_folder + "/src/app/";
+    let demoAngularAppPath = demoAngularFolder + "/src/app/";
     if (fs.existsSync(demoAngularAppPath)) {
-        files.push(demo_angular_folder + "/package.json");
+        files.push(demoAngularFolder + "/package.json");
         var demoFiles = fs.readdirSync(demoAngularAppPath);
         for (var d in demoFiles) {
             var demoFile = demoFiles[d];
             files.push(demoAngularAppPath + demoFile);
         }
 
-        updateAppsTsConfigFile(path.resolve(__dirname, "../" + demo_angular_folder));
+        updateAppsTsConfigFile(path.resolve(__dirname, "../" + demoAngularFolder));
 
     }
 
     // add the demo-angular files
-    // let demoVueAppPath = demo_vue_folder + "/app/components/";
+    // let demoVueAppPath = demoVueFolder + "/app/components/";
     // if (fs.existsSync(demoVueAppPath)) {
-    //     files.push(demo_vue_folder + "/package.json");
+    //     files.push(demoVueFolder + "/package.json");
     //     var demoFiles = fs.readdirSync(demoVueAppPath);
     //     for (var d in demoFiles) {
     //         var demoFile = demoFiles[d];
     //         files.push(demoVueAppPath + demoFile);
     //     }
-    //     updateAppsTsConfigFile(path.resolve(__dirname, "../" + demo_vue_folder));
+    //     updateAppsTsConfigFile(path.resolve(__dirname, "../" + demoVueFolder));
     // }
 
     // prepare and cache a few Regexp thingies
@@ -344,9 +372,9 @@ function adjustScripts() {
             var contents = fs.readFileSync(file, 'utf8');
 
             // Adds an 'import' and console.log() of the 'message' filed of 'nativescript-yourplugin' to the includes apps
-            contents = file.includes(demo_folder) ? updateApp(contents, file, demoTsSearchTerm) : contents;
-            contents = file.includes(demo_angular_folder) ? updateApp(contents, file, demoAngularSearchTerm) : contents;
-            // contents = file.includes(demo_vue_folder) ? updateDemoVueApp(contents, file) : contents;
+            contents = file.includes(demoTsFolder) ? updateApp(contents, file, demoTsSearchTerm) : contents;
+            contents = file.includes(demoAngularFolder) ? updateApp(contents, file, demoAngularSearchTerm) : contents;
+            // contents = file.includes(demoVueFolder) ? updateDemoVueApp(contents, file) : contents;
 
             var result = contents.replace(regexp_seed_plugin_name, inputParams.plugin_name);
             result = result.replace(regexp_seed_class_name, class_name);
@@ -357,6 +385,7 @@ function adjustScripts() {
     }
 
     replaceFiles();
+    updateSrcJson();
 }
 
 function updateAppsTsConfigFile(path) {
@@ -377,6 +406,105 @@ function updateAppsTsConfigFile(path) {
     fs.writeFileSync(jsonPath, JSON.stringify(jsonObject, null, "\t"));
 }
 
+function updateSrcJson() {
+    let jsonPath = path.resolve(__dirname, "../") + "/package.json";
+    let jsonFile = fs.readFileSync(jsonPath);
+    let jsonObject = JSON.parse(jsonFile);
+    var jsonScripts = ensureJsonArray(jsonObject["scripts"]);
+    let pluginScripts = getPluginScripts();
+
+    var newScripts = updateObject(pluginScripts, jsonScripts);
+    jsonObject["scripts"] = newScripts;
+
+    fs.writeFileSync(jsonPath, JSON.stringify(jsonObject, null, "\t"));
+}
+
+function getPluginScripts() {
+    let scripts = [];
+    let prepareScriptCommand;
+    let clearScriptResetCommands = [];
+    let pluginName = `nativescript-` + inputParams.plugin_name;
+    if (inputParams.include_typescript_demo === "y") {
+        preDefinedAppScripts.forEach((script) => {
+            scripts.push(
+                {
+                    key: script.key.replace(appNamePlaceholderStr, tsAppName),
+                    value: script.value.replace(appPathPlaceholderStr, demoTsFolder)
+                });
+        });
+        let resetScriptKey = preDefinedResetScript.key.replace(appNamePlaceholderStr, tsAppName);
+        scripts.push({
+            key: resetScriptKey,
+            value: preDefinedResetScript.value.replace(appPathPlaceholderStr, demoTsFolder)
+        });
+
+        clearScriptResetCommands.push(resetScriptKey);
+
+        let updatedRemoveAddPluginCommand = removeAddPluginCommand.replace(appNamePlaceholderStr, demoTsFolder);
+        prepareScriptCommand = "&& " + updatedRemoveAddPluginCommand.replace(pluginNamePlaceholderStr, pluginName);
+    }
+
+    if (inputParams.include_angular_demo === "y") {
+        preDefinedAppScripts.forEach((script) => {
+            scripts.push(
+                {
+                    key: script.key.replace(appNamePlaceholderStr, angularAppName),
+                    value: script.value.replace(appPathPlaceholderStr, demoAngularFolder)
+                });
+        });
+
+        let resetScriptKey = preDefinedResetScript.key.replace(appNamePlaceholderStr, angularAppName);
+        scripts.push({
+            key: resetScriptKey,
+            value: preDefinedResetScript.value.replace(appPathPlaceholderStr, demoAngularFolder)
+        });
+
+        clearScriptResetCommands.push(resetScriptKey);
+
+        let updatedRemoveAddPluginCommand = removeAddPluginCommand.replace(appNamePlaceholderStr, demoAngularFolder);
+        prepareScriptCommand += " && " + updatedRemoveAddPluginCommand.replace(pluginNamePlaceholderStr, pluginName);
+    }
+
+    if (inputParams.include_vue_demo) {
+        preDefinedAppScripts.forEach((script) => {
+            scripts.push(
+                {
+                    key: script.key.replace(appNamePlaceholderStr, demoVueFolder),
+                    value: script.value.replace(appPathPlaceholderStr, demoVueFolder)
+                });
+        });
+
+        let resetScriptKey = preDefinedResetScript.key.replace(appNamePlaceholderStr, angularAppName);
+        scripts.push({
+            key: resetScriptKey,
+            value: preDefinedResetScript.value.replace(appPathPlaceholderStr, demoAngularFolder)
+        });
+
+        clearScriptResetCommands.push(resetScriptKey);
+
+        let updatedRemoveAddPluginCommand = removeAddPluginCommand.replace(appNamePlaceholderStr, demoVueFolder);
+        prepareScriptCommand += " && " + updatedRemoveAddPluginCommand.replace(pluginNamePlaceholderStr, pluginName);
+    }
+
+    scripts.push({
+        key: preDefinedPrepareScript.key,
+        value: preDefinedPrepareScript.value.replace(removeAddPluginCommandPlaceholderStr, prepareScriptCommand)
+    });
+
+    let fullAppResetCommand = "";
+    clearScriptResetCommands.forEach((tag) => {
+        fullAppResetCommand += fullAppResetCommand.length === 0 ? "npm run " + tag : " && npm run " + tag;
+    });
+
+    scripts.push({
+        key: preDefinedCleanScript.key,
+        value: preDefinedCleanScript.value.replace(cleanAppsScriptPlaceholderStr, fullAppResetCommand)
+    });
+
+    
+
+    return scripts;
+}
 
 function updateJsonArray(newValues, oldValues) {
     newValues.forEach((value) => {
@@ -406,9 +534,9 @@ function ensureJsonArray(jsonSection) {
 
 function updateApp(contents, file, searchTerm) {
     if (contents.includes(searchTerm)) {
-        let pluginName = `'nativescript-`+ inputParams.plugin_name + `'`;
-        console.log("Updating " + file + " with " + pluginName + " import .");
-        let typeScriptImportSnippet = `import { ` + class_name + ` } from ` + pluginName + `;\n`,
+        let fullPluginName = `'nativescript-` + inputParams.plugin_name + `'`;
+        console.log("Updating " + file + " with " + fullPluginName + " import .");
+        let typeScriptImportSnippet = `import { ` + class_name + ` } from ` + fullPluginName + `;\n`,
             typeScriptAlertSnippet = `console.log(new ` + class_name + `().message);\n`;
         contents = typeScriptAlertSnippet + contents;
         contents = typeScriptImportSnippet + contents;
@@ -452,7 +580,7 @@ function askInitGit() {
 
 // todo
 function getTslintCommand(appPath) {
-    
+
 }
 
 function replaceFiles() {
@@ -479,12 +607,12 @@ function addPluginToDemoApps() {
                         console.log('Screenshots removed.');
                         rimraf(seed_tests_dir, function () {
                             console.log('Seed tests removed.');
-        
+
                             // delete postclone.js
                             rimraf.sync('../CONTRIBUTING.md');
                             rimraf.sync('../CODE_OF_CONDUCT.md');
                             rimraf.sync(scripts_dir + '/postclone.js');
-        
+
                             askInitGit();
                         });
                     });
@@ -493,6 +621,8 @@ function addPluginToDemoApps() {
                 }
             }
         });
+    } else {
+        askInitGit();
     }
 }
 
