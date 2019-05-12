@@ -99,12 +99,12 @@ describe('postclone', function () {
             }
 
             _srcReadmeContent = fs.readFileSync(constants.SEED_LOCATION + "/src/README.md");
-            testUtils.callPostclone(constants.SEED_COPY_LOCATION, constants.TEST_GITHUB_USERNAME, constants.TEST_PLUGIN_NAME, "n",  "n", "y", function (error, stdout) {
+            testUtils.callPostclone(constants.SEED_COPY_LOCATION, constants.TEST_GITHUB_USERNAME, constants.TEST_PLUGIN_NAME, "n",  "y", "y", function (error, stdout) {
                 if (error) {
                     done.fail(error);
                 } else {
                     var seedCopyPath = path.resolve(__dirname, constants.SEED_COPY_LOCATION);
-                    expect(fs.existsSync(seedCopyPath + "/demo")).toBe(false);
+                    expect(fs.existsSync(seedCopyPath + "/demo")).toBe(true);
 
                     expect(fs.existsSync(seedCopyPath + "/demo-angular")).toBe(true);
                     done();
