@@ -53,10 +53,8 @@ exports.copySeedDir = function copySeedDir(seedLocation, copyLocation, callback)
     ncp(seedLocation, copyLocation, {
         filter: function (fileName) {            
             if ((fileName.indexOf("seed-tests") > -1 && fileName.indexOf(constants.SEED_COPY_LOCATION) > -1) ||
-                (fileName.indexOf("demo") > -1 && fileName.indexOf("node_modules") > -1)||
                 (fileName.indexOf("seed-tests") > -1 && fileName.indexOf("node_modules") > -1) ||
-                (fileName.indexOf("src") > -1 && fileName.indexOf("node_modules") > -1) ||
-                (fileName.indexOf("demo") > -1 && fileName.indexOf("platforms") > -1)) {
+                (fileName.indexOf("src") > -1 && fileName.indexOf("node_modules") > -1)) {
                 return false;
             }
 
@@ -70,9 +68,10 @@ exports.copySeedDir = function copySeedDir(seedLocation, copyLocation, callback)
     });
 };
 
-exports.callPostclone = function callPostclone(seedLocation, githubUsername, pluginName, initGit, callback) {
+exports.callPostclone = function callPostclone(seedLocation, githubUsername, pluginName, initGit, includeTypescriptDemo, includeAngularDemo, callback) {
     var postcloneScript = getPackageJsonPostcloneScript();
-    postcloneScript = postcloneScript.replace("postclone.js", "postclone.js gitHubUsername=" + githubUsername + " pluginName=" + pluginName + " initGit=" + initGit);
+    postcloneScript = postcloneScript.replace("postclone.js", "postclone.js gitHubUsername=" + githubUsername + " pluginName=" + pluginName + " initGit=" + initGit + " includeTypescriptDemo=" + includeTypescriptDemo + " includeAngularDemo=" + includeAngularDemo);
+    console.log("Executing postclone script with args: " + postcloneScript);
     exec("cd " + seedLocation + "/src && " + postcloneScript, function (error, stdout, stderr) {
         callback(error, stdout, stderr);
     });

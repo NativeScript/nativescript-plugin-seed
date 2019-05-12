@@ -3,6 +3,7 @@ var fs = require('fs');
 var glob = require("glob");
 var testUtils = require("./tests.utils");
 var constants = require("./tests.constants");
+var path = require("path");
 
 var _srcReadmeContent = "";
 
@@ -16,7 +17,7 @@ describe('postclone', function () {
                 done.fail(err);
             }
 
-            testUtils.callPostclone(constants.SEED_COPY_LOCATION, constants.TEST_GITHUB_USERNAME, constants.TEST_PLUGIN_NAME, "y", function (error) {
+            testUtils.callPostclone(constants.SEED_COPY_LOCATION, constants.TEST_GITHUB_USERNAME, constants.TEST_PLUGIN_NAME, "y", "n", "n", function (error) {
                 if (error) {
                     done.fail(error);
                 } else {
@@ -36,7 +37,7 @@ describe('postclone', function () {
             }
 
             _srcReadmeContent = fs.readFileSync(constants.SEED_LOCATION + "/src/README.md");
-            testUtils.callPostclone(constants.SEED_COPY_LOCATION, constants.TEST_GITHUB_USERNAME, constants.TEST_PLUGIN_NAME, "n", function (error, stdout) {
+            testUtils.callPostclone(constants.SEED_COPY_LOCATION, constants.TEST_GITHUB_USERNAME, constants.TEST_PLUGIN_NAME, "n",  "n", "n", function (error, stdout) {
                 if (error) {
                     done.fail(error);
                 } else {
@@ -44,6 +45,69 @@ describe('postclone', function () {
                         expect(stdout).toContain("NativeScript/nativescript-plugin-seed.git");
                         done();
                     });
+                }
+            });
+        });
+    });
+
+    it('should crate only TypeScript app (demo)', function (done) {
+        testUtils.copySeedDir(constants.SEED_LOCATION, constants.SEED_COPY_LOCATION, function (err) {
+            if (err) {
+                done.fail(err);
+            }
+
+            _srcReadmeContent = fs.readFileSync(constants.SEED_LOCATION + "/src/README.md");
+            testUtils.callPostclone(constants.SEED_COPY_LOCATION, constants.TEST_GITHUB_USERNAME, constants.TEST_PLUGIN_NAME, "n",  "y", "n", function (error, stdout) {
+                if (error) {
+                    done.fail(error);
+                } else {
+                    var seedCopyPath = path.resolve(__dirname, constants.SEED_COPY_LOCATION);
+                    expect(fs.existsSync(seedCopyPath + "/demo")).toBe(true);
+
+                    expect(fs.existsSync(seedCopyPath + "/demo-angular")).toBe(false);
+                    done();
+                }
+            });
+        });
+    });
+
+    it('should crate only Angular app (demo-angular)', function (done) {
+        testUtils.copySeedDir(constants.SEED_LOCATION, constants.SEED_COPY_LOCATION, function (err) {
+            if (err) {
+                done.fail(err);
+            }
+
+            _srcReadmeContent = fs.readFileSync(constants.SEED_LOCATION + "/src/README.md");
+            testUtils.callPostclone(constants.SEED_COPY_LOCATION, constants.TEST_GITHUB_USERNAME, constants.TEST_PLUGIN_NAME, "n",  "n", "y", function (error, stdout) {
+                if (error) {
+                    done.fail(error);
+                } else {
+                    var seedCopyPath = path.resolve(__dirname, constants.SEED_COPY_LOCATION);
+                    expect(fs.existsSync(seedCopyPath + "/demo")).toBe(false);
+
+                    expect(fs.existsSync(seedCopyPath + "/demo-angular")).toBe(true);
+                    done();
+                }
+            });
+        });
+    });
+
+    it('should crate both TypeScript & Angular app (demo & demo-angular)', function (done) {
+        testUtils.copySeedDir(constants.SEED_LOCATION, constants.SEED_COPY_LOCATION, function (err) {
+            if (err) {
+                done.fail(err);
+            }
+
+            _srcReadmeContent = fs.readFileSync(constants.SEED_LOCATION + "/src/README.md");
+            testUtils.callPostclone(constants.SEED_COPY_LOCATION, constants.TEST_GITHUB_USERNAME, constants.TEST_PLUGIN_NAME, "n",  "n", "y", function (error, stdout) {
+                if (error) {
+                    done.fail(error);
+                } else {
+                    var seedCopyPath = path.resolve(__dirname, constants.SEED_COPY_LOCATION);
+                    expect(fs.existsSync(seedCopyPath + "/demo")).toBe(false);
+
+                    expect(fs.existsSync(seedCopyPath + "/demo-angular")).toBe(true);
+                    done();
                 }
             });
         });
@@ -137,15 +201,6 @@ describe('postclone', function () {
     it('should replace each nativescript-YourPlugin string with nativescript-ThePlugin', function (done) {
         testUtils.findInFiles("nativescript-" + constants.TEST_PLUGIN_NAME, constants.SEED_COPY_LOCATION, function (resultsCount) {
             expect(resultsCount).toBeGreaterThan(0);
-            done();
-        });
-    });
-
-    it('should prepare a working demo and run test', function (done) {
-        var testsCommand = "cd " + constants.SEED_COPY_LOCATION + "/src && ";
-        testsCommand += testUtils.isAndroid() ? "npm run test.android" : "npm run test.ios";
-        exec(testsCommand, function (error, stdout, stderr) {
-            expect(error).toBeNull();
             done();
         });
     });
