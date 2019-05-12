@@ -40,7 +40,6 @@ What does the seed give you out of the box?
 * the plugin structure with option for easy development and debugging (see [Development setup section](#Developmentsetup) below)
 * a simple working plugin
 * a demo project working with the plugin. It is useful during development and for running tests via Travis CI
-* plugin tests
 * a guideline how to structure your plugin README file that will be published to NPM
 * a shell script to create your plugin package
 * a proper `.gitignore` to keep GitHub tidy 
@@ -52,8 +51,8 @@ What does the seed give you out of the box?
 
 |Folder/File name| Description
 |---|---|
-|demo| The plugin demo source code|
-|demo/tests| The tests for your plugin|
+|demo| The plugin demo source code (optional during __postclone__ setup)|
+|demo-angular| The plugin demo source code (optional during __postclone__ setup)|
 |src| The plugin source code|
 |src/platform/android| Plugin Android specific configuration|
 |src/platform/ios|Plugin ios specific configuration|
@@ -69,8 +68,9 @@ What does the seed give you out of the box?
     * configure your github username - it will be changed in the package.json for you
     * configure your plugin name - all files and classes in the seed will be renamed for you
     * stub your plugin README.md file
+    * add TypeScript NativeScript application which is setup to use your plugin from its local `src` folder
+    * add Angular NativeScript application which is setup to use your plugin from its local `src` folder
     * create a new repository for your plugin
-    * npm link your plugin the demo app - this will install the plugin dependencies and will add a symbolic link to the plugin code in the demo project allowing you to do changes and review them in the demo without adding/removing the plugin every time you make a change. [Read more about npm link](https://docs.npmjs.com/cli/link). If you encounter an "EACCES" permission denied error, please fix you global npm permissions, which is perfectly explained [here](https://docs.npmjs.com/getting-started/fixing-npm-permissions).
 
 Now you can continue with the development of your plugin by using the [Development setup](#Developmentsetup) described below.
 
@@ -79,12 +79,12 @@ Now you can continue with the development of your plugin by using the [Developme
 #### Development setup
 For easier development and debugging purposes continue with the following steps:
 
-1. Open a command prompt/terminal, navigate to `src` folder and run `npm run demo.ios` or `npm run demo.android` to run the demo.
+1. Open a command prompt/terminal, navigate to `src` folder and run `npm run demo.ios`, `npm run demo.android`, `npm run demo-angular.ios`, `npm run demo-angular.android` to run the demo applications created during `postclone`.
 2. Open another command prompt/terminal, navigate to `src` folder and run `npm run plugin.tscwatch` to watch for file changes in your plugin.
 
 Now go and make a change to your plugin. It will be automatically applied to the demo project.
 
-**NOTE**: Any changes that you need to make in a native library used in your plugin or in any other files inside `src/platforms` directory such as Info.plist or AndroidManifest.xml can't be directly reflected in the demo app. You need to use `npm run demo.reset` and run the application again.
+**NOTE**: Any changes that you need to make in a native library used in your plugin or in any other files inside `src/platforms` directory such as Info.plist or AndroidManifest.xml can't be directly reflected in the demo applications. You need to use `npm run demo.reset` or `npm run demo-angular.ios` and run the application again.
 
 ### Linking to CocoaPod or Android Arsenal plugins
 
@@ -130,24 +130,14 @@ Sometimes you may need to wipe away the `src/node_modules`, `demo/node_modules` 
 
 Sometimes you just need to wipe out the demo's `platforms` directory only:
 
-* Run `npm run demo.reset` to delete the demo's `platforms` directory only.
+* Run `npm run demo.reset` or `npm run demo-angular.ios` to delete the application's `platforms` directory only.
 
 Sometimes you may need to ensure plugin files are updated in the demo:
 
 * Run `npm run plugin.prepare` will do a fresh build of the plugin then remove itself from the demo and add it back for assurance.
 
-### Unittesting
-The plugin seed automatically adds Jasmine-based unittest support to your plugin.
-Open `demo/app/tests/tests.js` and adjust its contents so the tests become meaningful in the context of your plugin and its features.
-
-You can read more about this topic [here](https://docs.nativescript.org/tooling/testing).
-
-Once you're ready to test your plugin's API go to `src` folder and execute one of these commands:
-
-```
-npm run test.ios
-npm run test.android
-```
+### Unit testing
+In order to add unit testing to the demo applications and in relation to test your plugin inside of them you should follow our latest guide [here](https://docs.nativescript.org/tooling/testing/testing).
 
 ### Publish to NPM
 
@@ -162,41 +152,9 @@ If you just want to create a package, go to `publish` folder and execute `pack.s
 
 ### TravisCI
 
-The plugin structure comes with a fully functional .travis.yml file that deploys the testing app on Android emulator and iOS simulator and as a subsequent step runs the tests from [UnitTesting section](#Unittesting). All you have to do, after cloning the repo and implementing your plugin and tests, is to sign up at [https://travis-ci.org/](https://travis-ci.org/). Then enable your plugin's repo on "https://travis-ci.org/profile/<your github user\>" and that's it. Next time a PR is opened or change is committed to a branch TravisCI will trigger a build testing the code.
+The plugin structure comes with a fully functional .travis.yml file that deploys the testing app on Android emulator and iOS simulator to make sure that those apps start correctly while your plugin is linked to them. All you have to do, after cloning the repo and implementing your plugin and tests, is to sign up at [https://travis-ci.org/](https://travis-ci.org/). Then enable your plugin's repo on "https://travis-ci.org/profile/<your github user\>" and that's it. Next time a PR is opened or change is committed to a branch TravisCI will trigger a build testing the code.
 
 To properly show current build status you will have to edit the badge at the start of the README.md file so it matches your repo, user and branch. 
-
-### Referring tns-core-modules in the Plugin
-We recommend to use full imports of `tns-core-modules` due to [an issue in Angular CLI](https://github.com/angular/angular-cli/issues/5618#issuecomment-306479219). Read more detailed explanation in [this discussion](https://github.com/NativeScript/nativescript-plugin-seed/pull/32#discussion_r131147787).
-
-Ultimately after the issue in Angular CLI is fixed this would not be a restriction, but till then the recommended approach is to import from `tns-core-modules` using full path. Here is an example:
-
-**WRONG**
-
-*tsconfig.json*
-````
-...
-
-"paths": {
-  "*": [
-    "./node_modules/*",
-    "./node_modules/tns-core-modules/*"
-  ]
-}
-...
-````
-
-*yourplugin.common.ts*
-````
-import * as app from 'application';
-````
-
-**RIGHT**
-
-*yourplugin.common.ts*
-````
-import * as app from 'tns-core-modules/application';
-````
 
 ## Contribute
 We love PRs! Check out the [contributing guidelines](CONTRIBUTING.md). If you want to contribute, but you are not sure where to start - look for issues labeled [`help wanted`](https://github.com/NativeScript/tns-core-modules-widgets/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22).
