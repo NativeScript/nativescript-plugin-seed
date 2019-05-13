@@ -370,11 +370,11 @@ function adjustScripts() {
 
         if (fs.lstatSync(file).isFile()) {
             var contents = fs.readFileSync(file, 'utf8');
-
+            
             // Adds an 'import' and console.log() of the 'message' filed of 'nativescript-yourplugin' to the includes apps
-            contents = file.includes(demoTsFolder) ? updateApp(contents, file, demoTsSearchTerm) : contents;
-            contents = file.includes(demoAngularFolder) ? updateApp(contents, file, demoAngularSearchTerm) : contents;
-            // contents = file.includes(demoVueFolder) ? updateDemoVueApp(contents, file) : contents;
+            contents = file.includes(pathModule.join(demoTsFolder)) ? updateApp(contents, file, demoTsSearchTerm) : contents;
+            contents = file.includes(pathModule.join(demoAngularFolder)) ? updateApp(contents, file, demoAngularSearchTerm) : contents;
+            // contents = file.includes(pathModule.join(demoVueFolder)) ? updateDemoVueApp(contents, file) : contents;
 
             var result = contents.replace(regexp_seed_plugin_name, inputParams.plugin_name);
             result = result.replace(regexp_seed_class_name, class_name);
