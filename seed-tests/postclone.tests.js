@@ -63,8 +63,11 @@ describe('postclone', function () {
                 } else {
                     var seedCopyPath = path.resolve(__dirname, constants.SEED_COPY_LOCATION);
                     expect(fs.existsSync(seedCopyPath + "/demo")).toBe(true);
+                    expect(stdout.includes("Updating ../demo/")).toBe(true);
 
                     expect(fs.existsSync(seedCopyPath + "/demo-angular")).toBe(false);
+                    expect(stdout.includes("Updating ../demo-angular/")).toBe(false);
+
                     done();
                 }
             });
@@ -84,8 +87,11 @@ describe('postclone', function () {
                 } else {
                     var seedCopyPath = path.resolve(__dirname, constants.SEED_COPY_LOCATION);
                     expect(fs.existsSync(seedCopyPath + "/demo")).toBe(false);
+                    expect(stdout.includes("Updating ../demo/")).toBe(false);
 
                     expect(fs.existsSync(seedCopyPath + "/demo-angular")).toBe(true);
+                    expect(stdout.includes("Updating ../demo-angular/")).toBe(true);
+
                     done();
                 }
             });

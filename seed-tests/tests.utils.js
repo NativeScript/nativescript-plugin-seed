@@ -68,9 +68,9 @@ exports.copySeedDir = function copySeedDir(seedLocation, copyLocation, callback)
     });
 };
 
-exports.callPostclone = function callPostclone(seedLocation, githubUsername, pluginName, initGit, includeTypescriptDemo, includeAngularDemo, callback) {
+exports.callPostclone = function callPostclone(seedLocation, githubUsername, pluginName, initGit, includeTypeScriptDemo, includeAngularDemo, callback) {
     var postcloneScript = getPackageJsonPostcloneScript();
-    postcloneScript = postcloneScript.replace("postclone.js", "postclone.js gitHubUsername=" + githubUsername + " pluginName=" + pluginName + " initGit=" + initGit + " includeTypescriptDemo=" + includeTypescriptDemo + " includeAngularDemo=" + includeAngularDemo);
+    postcloneScript = postcloneScript.replace("postclone.js", "postclone.js gitHubUsername=" + githubUsername + " pluginName=" + pluginName + " initGit=" + initGit + " includeTypeScriptDemo=" + includeTypeScriptDemo + " includeAngularDemo=" + includeAngularDemo);
     console.log("Executing postclone script with args: " + postcloneScript);
     exec("cd " + seedLocation + "/src && " + postcloneScript, function (error, stdout, stderr) {
         callback(error, stdout, stderr);

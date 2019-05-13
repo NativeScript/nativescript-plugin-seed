@@ -97,8 +97,8 @@ var class_name,
 
 console.log('NativeScript Plugin Seed Configuration');
 
-// Expected order: `gitHubUsername` `pluginName` `initGit` `includeTypescriptDemo` `includeAngularDemo`
-// Example: gitHubUsername=PluginAuthor pluginName=myPluginClassName initGit=n includeTypescriptDemo=y includeAngularDemo=n
+// Expected order: `gitHubUsername` `pluginName` `initGit` `includeTypeScriptDemo` `includeAngularDemo`
+// Example: gitHubUsername=PluginAuthor pluginName=myPluginClassName initGit=n includeTypeScriptDemo=y includeAngularDemo=n
 var parseArgv = function () {
     var argv = Array.prototype.slice.call(process.argv, 2);
     var result = {};
@@ -115,9 +115,19 @@ if (argv) {
     inputParams.github_username = argv.gitHubUsername;
     inputParams.plugin_name = argv.pluginName;
     inputParams.init_git = argv.initGit;
-    inputParams.include_typescript_demo = argv.includeTypescriptDemo;
+    inputParams.include_typescript_demo = argv.includeTypeScriptDemo;
     inputParams.include_angular_demo = argv.includeAngularDemo;
     // inputParams.include_vue_demo = argv.includeVueDemo;
+}
+
+if (!isInteractive() && (!inputParams.github_username || !inputParams.plugin_name || !inputParams.init_git || !inputParams.include_typescript_demo || !inputParams.include_angular_demo)) {
+    console.log("Using default values for plugin creation since your shell is not interactive.");
+    inputParams.github_username = "PluginAuthor";
+    inputParams.plugin_name = "myPluginClassName";
+    inputParams.init_git = "y";
+    inputParams.include_typescript_demo = "y";
+    inputParams.include_angular_demo = "n";
+    // inputParams.include_vue_demo = "n";
 }
 
 askGithubUsername();
@@ -578,11 +588,6 @@ function askInitGit() {
     }
 }
 
-// todo
-function getTslintCommand(appPath) {
-
-}
-
 function replaceFiles() {
     for (key in filesToReplace) {
         var file = filesToReplace[key];
@@ -624,6 +629,30 @@ function addPluginToDemoApps() {
     } else {
         askInitGit();
     }
+}
+
+function isInteractive() {
+	const result = isRunningInTTY() && !isCIEnvironment();
+	return result;
+}
+
+/**
+ * Checks if current process is running in Text Terminal (TTY)
+ */
+function isRunningInTTY() {
+	return process.stdout &&
+		process.stdout.isTTY &&
+		process.stdin &&
+		process.stdin.isTTY;
+}
+
+function isCIEnvironment() {
+	// The following CI environments set their own environment variables that we respect:
+	//  travis: "CI",
+	//  circleCI: "CI",
+	//  jenkins: "JENKINS_HOME"
+
+	return !!(process.env && (process.env.CI || process.env.JENKINS_HOME));
 }
 
 function initGit() {
