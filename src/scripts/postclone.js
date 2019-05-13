@@ -207,7 +207,7 @@ function askAngularDemo() {
         prompt.start();
         prompt.get({
             name: 'include_angular_demo',
-            description: 'Do you want to include a "Angular NativeScript" application linked with your plugin to make development easier (y/n)?',
+            description: 'Do you want to include an "Angular NativeScript" application linked with your plugin to make development easier (y/n)?',
             default: 'n'
         }, function (err, result) {
             if (err) {
