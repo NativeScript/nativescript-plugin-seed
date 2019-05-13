@@ -15,7 +15,7 @@
         "url": "https://github.com/YourName/nativescript-yourplugin.git"
     },
     "scripts": {
-        "tsc": "tsc",
+        "tsc": "npm i && tsc",
         "build": "npm run tsc && npm run build.native",
         "build.native": "node scripts/build-native.js",
         "postclone": "npm i && node scripts/postclone.js",
