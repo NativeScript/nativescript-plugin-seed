@@ -235,7 +235,7 @@ function createDemoAppsFromTemplates() {
     if (inputParams.include_typescript_demo && inputParams.include_typescript_demo.toLowerCase() === "y") {
         appsToCreate.push({
             command: "cd ../ && tns create " + tsAppName + " --template tns-template-blank-ts && cd " + tsAppName + " && cd ../src/",
-            successMessage: "TypeScript-NativeScript application created at: /demo",
+            successMessage: "TypeScript-NativeScript application created at: " + demoTsFolder,
             type: "TypeScript"
         });
         appsToInstallPluginIn.push(demoTsFolder);
@@ -244,7 +244,7 @@ function createDemoAppsFromTemplates() {
     if (inputParams.include_angular_demo && inputParams.include_angular_demo.toLowerCase() === "y") {
         appsToCreate.push({
             command: "cd ../ && tns create " + angularAppName + " --template tns-template-blank-ng && cd " + angularAppName + " && cd ../src/",
-            successMessage: "Angular-NativeScript application created at: /demo-angular",
+            successMessage: "Angular-NativeScript application created at: " + demoAngularFolder,
             type: "Angular"
         });
         appsToInstallPluginIn.push(demoAngularFolder);
