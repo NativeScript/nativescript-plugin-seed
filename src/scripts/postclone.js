@@ -3,7 +3,7 @@ var prompt = require('prompt');
 var rimraf = require('rimraf');
 var exec = require('child_process').exec;
 const spawn = require('child_process').spawn;
-const path = require("path");
+const pathModule = require("path");
 
 var class_name,
     inputParams = {
@@ -321,7 +321,7 @@ function adjustScripts() {
     files.push("platforms/android/include.gradle");
 
     // add the demo files
-    let demoAppPath = demoTsFolder + "/app/home/";
+    let demoAppPath = pathModule.join(demoTsFolder + "/app/home/");
     if (fs.existsSync(demoAppPath)) {
         files.push(demoTsFolder + "/package.json");
         var demoFiles = fs.readdirSync(demoAppPath);
@@ -330,11 +330,11 @@ function adjustScripts() {
             files.push(demoAppPath + demoFile);
         }
 
-        updateAppsTsConfigFile(path.resolve(__dirname, "../" + demoTsFolder));
+        updateAppsTsConfigFile(pathModule.resolve(__dirname, pathModule.join("../" + demoTsFolder)));
     }
 
     // add the demo-angular files
-    let demoAngularAppPath = demoAngularFolder + "/src/app/";
+    let demoAngularAppPath = pathModule.join(demoAngularFolder + "/src/app/");
     if (fs.existsSync(demoAngularAppPath)) {
         files.push(demoAngularFolder + "/package.json");
         var demoFiles = fs.readdirSync(demoAngularAppPath);
@@ -343,12 +343,12 @@ function adjustScripts() {
             files.push(demoAngularAppPath + demoFile);
         }
 
-        updateAppsTsConfigFile(path.resolve(__dirname, "../" + demoAngularFolder));
+        updateAppsTsConfigFile(pathModule.resolve(__dirname, pathModule.join("../" + demoAngularFolder)));
 
     }
 
     // add the demo-angular files
-    // let demoVueAppPath = demoVueFolder + "/app/components/";
+    // let demoVueAppPath = path.join(demoVueFolder + "/app/components/");
     // if (fs.existsSync(demoVueAppPath)) {
     //     files.push(demoVueFolder + "/package.json");
     //     var demoFiles = fs.readdirSync(demoVueAppPath);
@@ -356,7 +356,7 @@ function adjustScripts() {
     //         var demoFile = demoFiles[d];
     //         files.push(demoVueAppPath + demoFile);
     //     }
-    //     updateAppsTsConfigFile(path.resolve(__dirname, "../" + demoVueFolder));
+    //     updateAppsTsConfigFile(path.resolve(__dirname, path.join("../" + demoVueFolder)));
     // }
 
     // prepare and cache a few Regexp thingies
@@ -389,7 +389,7 @@ function adjustScripts() {
 }
 
 function updateAppsTsConfigFile(path) {
-    let jsonPath = path + "/tsconfig.json";
+    let jsonPath = pathModule.join(path + "/tsconfig.json");
     let jsonFile = fs.readFileSync(jsonPath);
     let jsonObject = JSON.parse(jsonFile);
     var jsonInclude = ensureJsonArray(jsonObject["include"]);
@@ -407,7 +407,7 @@ function updateAppsTsConfigFile(path) {
 }
 
 function updateSrcJson() {
-    let jsonPath = path.resolve(__dirname, "../") + "/package.json";
+    let jsonPath = pathModule.join(pathModule.resolve(__dirname, "../") + "/package.json");
     let jsonFile = fs.readFileSync(jsonPath);
     let jsonObject = JSON.parse(jsonFile);
     var jsonScripts = ensureJsonArray(jsonObject["scripts"]);
