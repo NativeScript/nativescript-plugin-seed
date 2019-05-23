@@ -58,12 +58,6 @@ var class_name,
             value: [
                 "./node_modules/*"
             ]
-        },
-        {
-            key: "~/*",
-            value: [
-                "app/*"
-            ]
         }
     ],
     appNamePlaceholderStr = "appNamePlaceholder",
