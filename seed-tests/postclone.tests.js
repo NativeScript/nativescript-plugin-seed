@@ -62,8 +62,11 @@ describe('postclone', function () {
                     done.fail(error);
                 } else {
                     var seedCopyPath = path.resolve(__dirname, constants.SEED_COPY_LOCATION);
+                    let tsConfigContents = fs.readFileSync(seedCopyPath + "/demo/tsconfig.json").toString('utf-8');
+
                     expect(fs.existsSync(seedCopyPath + "/demo")).toBe(true);
                     expect(stdout.includes("Updating ../demo/")).toBe(true);
+                    expect(tsConfigContents.includes("app/*")).toBe(true);
 
                     expect(fs.existsSync(seedCopyPath + "/demo-angular")).toBe(false);
                     expect(stdout.includes("Updating ../demo-angular/")).toBe(false);
@@ -89,8 +92,11 @@ describe('postclone', function () {
                     expect(fs.existsSync(seedCopyPath + "/demo")).toBe(false);
                     expect(stdout.includes("Updating ../demo/")).toBe(false);
 
+                    let angularTsConfigContents = fs.readFileSync(seedCopyPath + "/demo-angular/tsconfig.json").toString('utf-8');
+
                     expect(fs.existsSync(seedCopyPath + "/demo-angular")).toBe(true);
                     expect(stdout.includes("Updating ../demo-angular/")).toBe(true);
+                    expect(angularTsConfigContents.includes("src/*")).toBe(true);
 
                     done();
                 }
@@ -110,9 +116,18 @@ describe('postclone', function () {
                     done.fail(error);
                 } else {
                     var seedCopyPath = path.resolve(__dirname, constants.SEED_COPY_LOCATION);
+                    let tsConfigContents = fs.readFileSync(seedCopyPath + "/demo/tsconfig.json").toString('utf-8');
+
                     expect(fs.existsSync(seedCopyPath + "/demo")).toBe(true);
+                    expect(stdout.includes("Updating ../demo/")).toBe(true);
+                    expect(tsConfigContents.includes("app/*")).toBe(true);
+
+                    let angularTsConfigContents = fs.readFileSync(seedCopyPath + "/demo-angular/tsconfig.json").toString('utf-8');
 
                     expect(fs.existsSync(seedCopyPath + "/demo-angular")).toBe(true);
+                    expect(stdout.includes("Updating ../demo-angular/")).toBe(true);
+                    expect(angularTsConfigContents.includes("src/*")).toBe(true);
+
                     done();
                 }
             });
