@@ -130,7 +130,7 @@ Sometimes you may need to wipe away the `src/node_modules`, `demo/node_modules` 
 
 Sometimes you just need to wipe out the demo's `platforms` directory only:
 
-* Run `npm run demo.reset` or `npm run demo-angular.ios` to delete the application's `platforms` directory only.
+* Run `npm run demo.reset` or `npm run demo-angular.reset` to delete the application's `platforms` directory only.
 
 Sometimes you may need to ensure plugin files are updated in the demo:
 
