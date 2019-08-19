@@ -38,7 +38,6 @@
     },
     "license": "Apache-2.0",
     "homepage": "https://github.com/YourName/nativescript-yourplugin",
-    "readmeFilename": "README.md",
     "devDependencies": {
         "tns-core-modules": "^6.0.0",
         "tns-platform-declarations": "^6.0.0",
