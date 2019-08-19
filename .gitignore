@@ -10,7 +10,7 @@ src/*.d.ts
 !src/references.d.ts
 !src/scripts/*.js
 !seed-tests/*.js
-seed-tests/seed-copy/**/*.*
+seed-tests/seed-copy
 seed-tests/seed-copy-new-git-repo/**/*.*
 !demo/karma.conf.js
 !demo/app/tests/*.js

@@ -455,6 +455,7 @@ function updateSrcJson() {
     let pluginScripts = getPluginScripts();
 
     var newScripts = updateObject(pluginScripts, jsonScripts);
+    delete newScripts["postclone"];
     jsonObject["scripts"] = newScripts;
 
     fs.writeFileSync(jsonPath, JSON.stringify(jsonObject, null, "\t"));

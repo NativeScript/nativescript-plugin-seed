@@ -178,6 +178,11 @@ describe('postclone', function () {
         expect(fs.existsSync(constants.SEED_COPY_LOCATION + "/src/scripts/postclone.js")).toBeFalsy();
     });
 
+    it('should delete the postclone script', function () {
+        let packageJsonContents = fs.readFileSync(constants.SEED_COPY_LOCATION + "/src/package.json").toString('utf-8');
+        expect(packageJsonContents.includes("postclone")).toBeFalsy();
+    });
+
     it('should delete the seed tests folder', function () {
         expect(fs.existsSync(constants.SEED_COPY_LOCATION + "/seed-tests")).toBeFalsy();
     });
