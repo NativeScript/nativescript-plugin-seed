@@ -1,0 +1,47 @@
+{
+	"name": "plugins",
+	"version": "0.0.0",
+	"license": "MIT",
+	"scripts": {
+		"setup": "npx rimraf node_modules package-lock.json dist tmp && npm i && ts-patch install",
+		"start": "nps",
+		"add": "nx g @nativescript/plugin-tools:add-package",
+		"add-angular": "nx g @nativescript/plugin-tools:add-angular",
+		"config": "nx g @nativescript/plugin-tools:config",
+		"publish-packages": "nx g @nativescript/plugin-tools:publish"
+	},
+	"private": true,
+	"devDependencies": {
+		"@angular/animations": "~10.1.0",
+		"@angular/common": "~10.1.0",
+		"@angular/compiler": "~10.1.0",
+		"@angular/compiler-cli": "~10.1.0",
+		"@angular/core": "~10.1.0",
+		"@angular/forms": "~10.1.0",
+		"@angular/platform-browser": "~10.1.0",
+		"@angular/platform-browser-dynamic": "~10.1.0",
+		"@angular/router": "~10.1.0",
+		"@nativescript/angular": "~10.1.0",
+		"@nativescript/core": "~7.0.0",
+		"@nativescript/plugin-tools": "~1.0.0",
+		"@nativescript/types": "~7.0.0",
+		"@nativescript/webpack": "~3.0.0",
+		"@ngtools/webpack": "~10.1.0",
+		"nativescript-vue": "~2.8.0",
+		"nativescript-vue-template-compiler": "~2.8.0",
+		"ng-packagr": "~10.1.0",
+		"rxjs": "~6.6.0",
+		"typescript": "~3.9.7",
+		"zone.js": "0.11.1"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "lint-staged"
+		}
+	},
+	"lint-staged": {
+		"**/*": [
+			"nx format:write --files"
+		]
+	}
+}

@@ -1,26 +1,44 @@
-.vscode
-.idea
-.DS_Store
-*.esm.json
-*.js
-*.js.map
-*.log
-src/*.d.ts
-!src/index.d.ts
-!src/references.d.ts
-!src/scripts/*.js
-!seed-tests/*.js
-seed-tests/seed-copy
-seed-tests/seed-copy-new-git-repo/**/*.*
-!demo/karma.conf.js
-!demo/app/tests/*.js
-demo/*.d.ts
-!demo/references.d.ts
-demo/lib
-demo/platforms
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist
+/tmp
+/out-tsc
+
+# dependencies
 node_modules
-publish/src
-publish/package
-demo/report/report.html
-demo/report/stats.json
-!demo-vue/app/app.js
+package-lock.json
+yarn.lock
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+
+*.tgz
+packages/**/angular/dist
